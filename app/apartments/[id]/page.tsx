@@ -1,24 +1,39 @@
+"use client"
+
+import { useState } from "react"
 import { supabase } from "@/lib/supabase"
 import BookingForm from "@/components/BookingForm"
+import BookingSuccessMessage from "@/components/BookingSuccessMessage"
 
 interface PageProps {
   params: Promise<{ id: string }>
 }
 
-export default async function ApartmentPage({ params }: PageProps) {
-  // Await the params to access the id
-  const { id } = await params
+export default function ApartmentPage({ params }: PageProps) {
+  const [bookingSuccess, setBookingSuccess] = useState(false)
+  const [apartment, setApartment] = useState<any>(null)
+  const [existingBookings, setExistingBookings] = useState<any[]>([])
 
-  const { data: apartment } = await supabase.from("apartments").select("*").eq("id", id).single()
+  useState(() => {
+    const fetchData = async () => {
+      const { id } = await params
+      const { data: apartmentData } = await supabase.from("apartments").select("*").eq("id", id).single()
+      const { data: bookingsData } = await supabase
+        .from("bookings")
+        .select("start_date, end_date")
+        .eq("apartment_id", id)
+        .eq("status", "confirmed")
 
-  const { data: existingBookings } = await supabase
-    .from("bookings")
-    .select("start_date, end_date")
-    .eq("apartment_id", id)
-    .eq("status", "confirmed")
+      setApartment(apartmentData)
+      setExistingBookings(bookingsData || [])
+    }
+
+    fetchData()
+    //@ts-ignore
+  }, [params])
 
   if (!apartment) {
-    return <div>Apartment not found</div>
+    return <div>Loading...</div>
   }
 
   return (
@@ -44,12 +59,17 @@ export default async function ApartmentPage({ params }: PageProps) {
           </div>
         </div>
         <div className="bg-white p-6 rounded-lg shadow-lg">
-          <BookingForm
-            apartmentId={id}
-            price={apartment.price_per_night}
-            maxGuests={apartment.max_guests}
-            existingBookings={existingBookings || []}
-          />
+          {bookingSuccess ? (
+            <BookingSuccessMessage />
+          ) : (
+            <BookingForm
+              apartmentId={apartment.id}
+              price={apartment.price_per_night}
+              maxGuests={apartment.max_guests}
+              existingBookings={existingBookings}
+              onBookingSuccess={() => setBookingSuccess(true)}
+            />
+          )}
         </div>
       </div>
     </div>

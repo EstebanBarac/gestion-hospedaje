@@ -16,9 +16,16 @@ interface BookingFormProps {
   price: number
   maxGuests: number
   existingBookings: Booking[]
+  onBookingSuccess: () => void
 }
 
-export default function BookingForm({ apartmentId, price, maxGuests, existingBookings }: BookingFormProps) {
+export default function BookingForm({
+  apartmentId,
+  price,
+  maxGuests,
+  existingBookings,
+  onBookingSuccess,
+}: BookingFormProps) {
   const [dates, setDates] = useState<[Date | null, Date | null]>([null, null])
   const [formData, setFormData] = useState({
     name: "",
@@ -60,8 +67,11 @@ export default function BookingForm({ apartmentId, price, maxGuests, existingBoo
       const bookingStart = new Date(booking.start_date)
       const bookingEnd = new Date(booking.end_date)
       return (
+        //@ts-ignore
         (dates[0] >= bookingStart && dates[0] <= bookingEnd) ||
+        //@ts-ignore
         (dates[1] >= bookingStart && dates[1] <= bookingEnd) ||
+        //@ts-ignore
         (dates[0] <= bookingStart && dates[1] >= bookingEnd)
       )
     })
@@ -90,6 +100,7 @@ export default function BookingForm({ apartmentId, price, maxGuests, existingBoo
       toast.success("¡Reserva enviada! Te contactaremos pronto")
       setFormData({ name: "", email: "", phone: "", guests: 1 })
       setDates([null, null])
+      onBookingSuccess()
     }
   }
 
@@ -118,6 +129,7 @@ export default function BookingForm({ apartmentId, price, maxGuests, existingBoo
             selectsEnd
             startDate={dates[0]}
             endDate={dates[1]}
+            //@ts-ignore
             minDate={dates[0]}
             excludeDates={disabledDates}
             placeholderText="Selecciona fecha"
