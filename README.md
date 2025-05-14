@@ -17,3 +17,6 @@ Una plataforma desarrollada para la gestión de reservas en departamentos tempor
 ✅ Administración separada del frontend para los clientes/usuarios.
 
 ✅ Datos persistidos en Supabase (auth, storage, database).
+
+
+![calendar-demo](https://github.com/user-attachments/assets/3741246c-129e-43b6-ba9b-d05ec4a8e4e6)
