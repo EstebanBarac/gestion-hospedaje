@@ -2,7 +2,7 @@ Sistema de Reservas Temporales + Administración
 Next.js • TypeScript • TailwindCSS • Supabase • Calendario Dinámico • Gestión de Tareas
 
 🧾 Descripción
-Una plataforma desarrollada para la gestión de reservas en departamentos temporarios. Además de permitir visualizar las reservas en un calendario interactivo por color, incluye un panel administrativo para agregar y gestionar tareas como limpieza, mantenimiento o reparaciones.
+Una plataforma desarrollada para la gestión de reservas en departamentos temporarios. Además de permitir visualizar las reservas en un calendario interactivo por color, incluye un panel administrativo para agregar y gestionar tareas como limpieza, mantenimiento o reparaciones. Utilizado a modo demo para muestra a posibles clientes.
 
 🔑 Funcionalidades principales
 
